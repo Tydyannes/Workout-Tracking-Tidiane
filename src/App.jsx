@@ -74,6 +74,20 @@ function TabsContent({ value, className, children }) {
   return <div className={className}>{children}</div>;
 }
 
+async function loadSessions() {
+  let { data, error } = await supabase.from("sessions").select("*").order("date", { ascending: false })
+  if (error) {
+    console.error(error)
+    return []
+  }
+  return data || []
+}
+
+async function saveSession(session) {
+  let { data, error } = await supabase.from("sessions").insert([session])
+  if (error) console.error(error)
+}
+
 // Domain code
 const supaFromLocal = () => {
   try {
